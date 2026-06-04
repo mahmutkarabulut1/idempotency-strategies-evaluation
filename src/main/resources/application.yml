@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: idempotent-operation-service
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/idemstudy
+    username: idem
+    password: idem
+    hikari:
+      maximum-pool-size: 50
+      connection-timeout: 2000
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.jdbc.batch_size: 50
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    consumer:
+      group-id: operation-consumer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        isolation.level: read_committed
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        enable.idempotence: true
+    listener:
+      ack-mode: manual
+
+# Per-run strategy selector: DB | REDIS | ZK | KAFKA | OUTBOX | PAYLOAD_HASH
+idem:
+  strategy: ${IDEM_STRATEGY:DB}
+  instance-id: ${INSTANCE_ID:local}
+  experiment-run: ${EXPERIMENT_RUN:adhoc}
+  lock:
+    wait-ms: ${IDEM_LOCK_WAIT_MS:2000}
+    lease-ms: ${IDEM_LOCK_LEASE_MS:5000}
+  redis:
+    address: redis://${REDIS_HOST:localhost}:${REDIS_PORT:6379}
+  zookeeper:
+    connect: ${ZK_CONNECT:localhost:2181}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    tags:
+      strategy: ${IDEM_STRATEGY:DB}
+      instance: ${INSTANCE_ID:local}
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+server:
+  tomcat:
+    threads:
+      max: 400

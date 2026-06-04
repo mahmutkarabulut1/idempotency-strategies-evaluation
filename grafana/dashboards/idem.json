@@ -1,0 +1,33 @@
+{
+  "title": "Idempotency Study",
+  "uid": "idem-study",
+  "schemaVersion": 39,
+  "time": { "from": "now-30m", "to": "now" },
+  "panels": [
+    {
+      "type": "timeseries", "title": "Throughput (req/s)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [{ "expr": "sum(rate(idempotency_requests_total[1m]))" }]
+    },
+    {
+      "type": "timeseries", "title": "p99 processing latency (s)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [{ "expr": "histogram_quantile(0.99, sum(rate(operation_processing_duration_seconds_bucket[1m])) by (le))" }]
+    },
+    {
+      "type": "stat", "title": "Duplicate side-effect violations",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "targets": [{ "expr": "sum(duplicate_side_effect_violations_total)" }]
+    },
+    {
+      "type": "stat", "title": "Stale locks",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "targets": [{ "expr": "sum(stale_lock_total)" }]
+    },
+    {
+      "type": "stat", "title": "Message redeliveries",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "targets": [{ "expr": "sum(message_redeliveries_total)" }]
+    }
+  ]
+}

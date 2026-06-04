@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite the paper and the software release."
+title: "Idempotency & Distributed Locking Experimental Testbed"
+authors:
+  - family-names: "Karabulut"
+    given-names: "Mahmut"
+    email: "mahmutkarabulut2003@gmail.com"
+version: 1.0.0
+date-released: 2026-06-03
+license: MIT
+keywords:
+  - distributed systems
+  - idempotency
+  - distributed locking
+  - fault injection
+  - microservices
+  - reproducibility
+preferred-citation:
+  type: article
+  title: "A Comparative Experimental Evaluation of Idempotency and Distributed Locking Strategies under High Concurrency and Fault Conditions"
+  authors:
+    - family-names: "Karabulut"
+      given-names: "Mahmut"
+  journal: "IEEE Access"
+  year: 2026

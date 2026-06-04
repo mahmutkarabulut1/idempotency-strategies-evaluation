@@ -1,0 +1,41 @@
+\documentclass[journal]{IEEEtran}
+% Self-contained IEEEtran build of the manuscript (compiles with stock TeX Live).
+% The official IEEE Access submission version is ieeeaccess-main.tex, which shares
+% the same body (body.tex) but uses the IEEE Access front matter / class.
+%
+% NOTE ON DATA: E1/E2/E4/E5/E6/E7 figures + results_table.tex + fault_table.tex are
+% MEASURED from results/aggregate.csv (analysis/analyze.py + make_results_table.py).
+% Only the E3 graded-latency sweep figure is a fixed-latency snapshot. Re-running
+% the artifact's grid regenerates all measured figures/tables.
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{../results/figures/}}
+
+\begin{document}
+
+\title{A Comparative Experimental Evaluation of Idempotency and Distributed
+Locking Strategies under High Concurrency and Fault Conditions}
+
+\author{\IEEEauthorblockN{Mahmut Karabulut}\\
+\IEEEauthorblockA{Ege University, Izmir, Turkey\\ \href{mailto:mahmutkarabulut2003@gmail.com}{mahmutkarabulut2003@gmail.com}}}
+
+\maketitle
+
+\input{body}
+
+% Author biographies (also required by IEEE Access; see ieeeaccess-main.tex).
+\begin{IEEEbiographynophoto}{Mahmut Karabulut}
+is a final-year Computer Engineering student at Ege University, Izmir, Turkey.
+His research interests include distributed systems reliability, idempotency,
+microservices architecture, and fault-injected experimental evaluation.
+\end{IEEEbiographynophoto}
+
+\end{document}

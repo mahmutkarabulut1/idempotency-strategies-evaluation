@@ -1,0 +1,50 @@
+# Build artifacts
+target/
+*.jar
+*.class
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Raw / intermediate experiment artifacts (large; the aggregated results,
+# figures, and tables under results/ are kept and published).
+results/raw/
+results/checkpoints/
+results/**/run*/
+results/aggregate.pilot-backup.csv
+
+# Logs — ignore all .log files EXCEPT the campaign run log, which is kept for
+# transparency. (result_summary.md is Markdown, not a log, so it is tracked.)
+*.log
+!results/campaign_run.log
+
+# Local-only compose override (prebuilt-jar dev shortcut; not part of the
+# reproducible stack — the canonical build is docker-compose.yml).
+docker-compose.override.yml
+
+# LaTeX build artifacts (sources are tracked; build with `cd paper && make`).
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.out
+# paper/main.{aux,bbl,blg} covered by the globs above; paper/main.log by *.log.
+paper/main.aux
+paper/main.bbl
+paper/main.blg
+paper/main.log
+# Generated docx export and the local submission cover letter (not part of the
+# tracked LaTeX sources).
+paper/article.docx
+paper/cover_letter.txt
+
+# Secrets — must never be committed
+.env
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+.idea/
+*.iml

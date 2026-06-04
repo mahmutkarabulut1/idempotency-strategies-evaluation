@@ -1,0 +1,206 @@
+% References for: A Comparative Experimental Evaluation of Idempotency and
+% Distributed Locking Strategies under High Concurrency and Fault Conditions
+% All entries correspond to canonical (archival) sources available in the
+% project reference set (see docs/literature_matrix.md).
+
+@inproceedings{burrows2006chubby,
+  author    = {Burrows, Mike},
+  title     = {The {Chubby} Lock Service for Loosely-Coupled Distributed Systems},
+  booktitle = {Proc. 7th USENIX Symp. Operating Systems Design and Implementation (OSDI)},
+  year      = {2006},
+  pages     = {335--350},
+  publisher = {USENIX Association}
+}
+
+@inproceedings{ongaro2014raft,
+  author    = {Ongaro, Diego and Ousterhout, John},
+  title     = {In Search of an Understandable Consensus Algorithm},
+  booktitle = {Proc. USENIX Annual Technical Conference (ATC)},
+  year      = {2014},
+  pages     = {305--319},
+  publisher = {USENIX Association}
+}
+
+@inproceedings{hunt2010zookeeper,
+  author    = {Hunt, Patrick and Konar, Mahadev and Junqueira, Flavio P. and Reed, Benjamin},
+  title     = {{ZooKeeper}: Wait-free Coordination for Internet-scale Systems},
+  booktitle = {Proc. USENIX Annual Technical Conference (ATC)},
+  year      = {2010},
+  publisher = {USENIX Association}
+}
+
+@article{lamport1978clocks,
+  author  = {Lamport, Leslie},
+  title   = {Time, Clocks, and the Ordering of Events in a Distributed System},
+  journal = {Communications of the ACM},
+  volume  = {21},
+  number  = {7},
+  pages   = {558--565},
+  year    = {1978}
+}
+
+@inproceedings{corbett2012spanner,
+  author    = {Corbett, James C. and Dean, Jeffrey and others},
+  title     = {{Spanner}: Google's Globally-Distributed Database},
+  booktitle = {Proc. 10th USENIX Symp. Operating Systems Design and Implementation (OSDI)},
+  year      = {2012},
+  pages     = {251--264}
+}
+
+@article{garciamolina1987sagas,
+  author  = {Garcia-Molina, Hector and Salem, Kenneth},
+  title   = {Sagas},
+  journal = {ACM SIGMOD Record},
+  volume  = {16},
+  number  = {3},
+  pages   = {249--259},
+  year    = {1987}
+}
+
+@inproceedings{helland2007apostate,
+  author    = {Helland, Pat},
+  title     = {Life Beyond Distributed Transactions: An Apostate's Opinion},
+  booktitle = {Proc. 3rd Biennial Conf. Innovative Data Systems Research (CIDR)},
+  year      = {2007},
+  pages     = {132--141}
+}
+
+@inproceedings{kreps2011kafka,
+  author    = {Kreps, Jay and Narkhede, Neha and Rao, Jun},
+  title     = {{Kafka}: A Distributed Messaging System for Log Processing},
+  booktitle = {Proc. 6th Int. Workshop on Networking Meets Databases (NetDB)},
+  year      = {2011}
+}
+
+@inproceedings{decandia2007dynamo,
+  author    = {DeCandia, Giuseppe and Hastorun, Deniz and others},
+  title     = {{Dynamo}: Amazon's Highly Available Key-value Store},
+  booktitle = {Proc. 21st ACM SIGOPS Symp. Operating Systems Principles (SOSP)},
+  year      = {2007},
+  pages     = {205--220}
+}
+
+@article{gilbert2002cap,
+  author  = {Gilbert, Seth and Lynch, Nancy},
+  title   = {Brewer's Conjecture and the Feasibility of Consistent, Available,
+             Partition-Tolerant Web Services},
+  journal = {ACM SIGACT News},
+  volume  = {33},
+  number  = {2},
+  pages   = {51--59},
+  year    = {2002}
+}
+
+@misc{kleppmann2016locking,
+  author = {Kleppmann, Martin},
+  title  = {How to Do Distributed Locking},
+  year   = {2016},
+  howpublished = {\url{https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html}},
+  note   = {Accessed 2026}
+}
+
+@misc{sanfilippo2016redlock,
+  author = {Sanfilippo, Salvatore},
+  title  = {Is {Redlock} Safe?},
+  year   = {2016},
+  howpublished = {\url{http://antirez.com/news/101}},
+  note   = {Accessed 2026}
+}
+
+@misc{stripe2017idempotency,
+  author = {{Stripe}},
+  title  = {Designing Robust and Predictable APIs with Idempotency},
+  year   = {2017},
+  howpublished = {\url{https://stripe.com/blog/idempotency}},
+  note   = {Accessed 2026}
+}
+
+@misc{airbnb2018doublepayments,
+  author = {Chew, Jon},
+  title  = {Avoiding Double Payments in a Distributed Payments System},
+  year   = {2018},
+  howpublished = {\url{https://medium.com/airbnb-engineering}},
+  note   = {Airbnb Tech Blog. Accessed 2026}
+}
+
+@misc{leels2017idempotencypostgres,
+  author = {Leels, Brandur},
+  title  = {Implementing Stripe-like Idempotency Keys in {Postgres}},
+  year   = {2017},
+  howpublished = {\url{https://brandur.org/idempotency-keys}},
+  note   = {Accessed 2026}
+}
+
+@misc{richardson_saga,
+  author = {Richardson, Chris},
+  title  = {Microservices Pattern: {Saga}},
+  howpublished = {\url{https://microservices.io/patterns/data/saga.html}},
+  note   = {Accessed 2026}
+}
+
+@misc{richardson_outbox,
+  author = {Richardson, Chris},
+  title  = {Microservices Pattern: Transactional Outbox},
+  howpublished = {\url{https://microservices.io/patterns/data/transactional-outbox.html}},
+  note   = {Accessed 2026}
+}
+
+@article{mdpi2022saga,
+  author  = {Daraghmi, Eman and Zhang, Cheng-Pu and Yuan, Shyan-Ming},
+  title   = {Enhancing Saga Pattern for Distributed Transactions within a
+             Microservices Architecture},
+  journal = {Applied Sciences},
+  volume  = {12},
+  number  = {12},
+  pages   = {6242},
+  year    = {2022},
+  doi     = {10.3390/app12126242}
+}
+
+@misc{ddd2026simulator,
+  author = {da Palma Pereira, Daniel and Rito Silva, Ant{\'o}nio},
+  title  = {A Domain-Driven Design Simulator for Business Logic-Rich Microservice Systems},
+  year   = {2026},
+  eprint = {2605.01159},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+  howpublished = {\url{https://arxiv.org/abs/2605.01159}}
+}
+
+@inproceedings{scitepress2025idempotency,
+  author    = {Whitaker, Matthew and Volckaert, Bruno and Al-Naday, Mays},
+  title     = {Idempotency in Service Mesh: For Resiliency of Fog-Native
+               Applications in Multi-Domain Edge-to-Cloud Ecosystems},
+  booktitle = {Proc. 15th Int. Conf. Cloud Computing and Services Science (CLOSER)},
+  year      = {2025},
+  pages     = {182--189},
+  publisher = {SciTePress},
+  doi       = {10.5220/0013293900003950}
+}
+
+@book{kleppmann2017ddia,
+  author    = {Kleppmann, Martin},
+  title     = {Designing Data-Intensive Applications: The Big Ideas Behind
+               Reliable, Scalable, and Maintainable Systems},
+  publisher = {O'Reilly Media},
+  year      = {2017}
+}
+
+% Industry/practitioner survey (commercial training-platform blog, not
+% peer-reviewed); cited only as an example of a qualitative practitioner
+% comparison, never as the scholarly anchor for the research gap.
+@misc{uplatz2025locking,
+  author = {{Uplatz}},
+  title  = {A Systematic Analysis of Distributed Locking: A Comparative Study of
+            {Redis}, {Zookeeper}, and Consensus-Based Coordination},
+  year   = {2025},
+  howpublished = {\url{https://uplatz.com/blog}},
+  note   = {Industry blog. Accessed 2026}
+}
+
+@misc{toxiproxy,
+  author = {{Shopify}},
+  title  = {{Toxiproxy}: A TCP Proxy to Simulate Network and System Conditions},
+  howpublished = {\url{https://github.com/Shopify/toxiproxy}},
+  note   = {Accessed 2026}
+}

@@ -1,0 +1,15 @@
+% Auto-generated from results/aggregate.csv by analysis/make_results_table.py
+\begin{table}[t]\centering
+\caption{Measured results: baseline throughput and p99 on the warm run (E1; cold warm-up run excluded), and duplicate side-effect violation rate under burst (E2).}\label{tab:measured}
+\small\begin{tabular}{@{}lccc@{}}
+\toprule
+Strategy & Thr.\ (req/s) & p99 (ms) & DSEVR (E2) \\
+\midrule
+DB & 200.0 & 8.1 & 0.0000 \\
+REDIS & 200.0 & 9.9 & 0.0000 \\
+ZK & 199.9 & 36.9 & 0.0000 \\
+KAFKA & 200.0 & 1.6 & 0.0000 \\
+OUTBOX & 200.0 & 5.9 & 0.0000 \\
+PAYLOAD\_HASH & 200.0 & 10.4 & 0.0000 \\
+\bottomrule
+\end{tabular}\end{table}

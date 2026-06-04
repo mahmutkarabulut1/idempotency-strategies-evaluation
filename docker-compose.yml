@@ -1,0 +1,153 @@
+# Reproducible experimental testbed for idempotency / distributed-locking study.
+# All stateful dependencies are reached THROUGH Toxiproxy so faults are injectable.
+#
+#   load-gen -> nginx -> {svc1,svc2,svc3} -> toxiproxy -> {postgres,redis,zk,kafka}
+#                                 |
+#                                 +-> /actuator/prometheus -> prometheus -> grafana
+#
+# Bring up:   docker compose up -d
+# Tear down:  docker compose down -v
+name: idemstudy
+
+x-app-env: &app-env
+  SPRING_PROFILES_ACTIVE: "docker"
+  # All dependency hosts point at Toxiproxy, not the real services.
+  DB_HOST: toxiproxy
+  DB_PORT: "25432"
+  REDIS_HOST: toxiproxy
+  REDIS_PORT: "26379"
+  ZK_CONNECT: "toxiproxy:22181"
+  KAFKA_BOOTSTRAP: "toxiproxy:29092"
+  # Strategy is selected per-run via this env var: DB | REDIS | ZK | KAFKA | OUTBOX | PAYLOAD_HASH
+  IDEM_STRATEGY: ${IDEM_STRATEGY:-DB}
+  # Lock knobs (E5 provokes premature lease expiry with a short lease).
+  IDEM_LOCK_WAIT_MS: ${IDEM_LOCK_WAIT_MS:-2000}
+  IDEM_LOCK_LEASE_MS: ${IDEM_LOCK_LEASE_MS:-5000}
+  JAVA_OPTS: "-XX:+UseG1GC -Xms512m -Xmx1g"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: idemstudy
+      POSTGRES_USER: idem
+      POSTGRES_PASSWORD: idem
+    command: ["postgres", "-c", "max_connections=400", "-c", "shared_buffers=512MB"]
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U idem -d idemstudy"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+    command: ["redis-server", "--appendonly", "no", "--save", ""]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ZOOKEEPER_TICK_TIME: "2000"
+      ZOOKEEPER_4LW_COMMANDS_WHITELIST: "ruok,srvr,stat"
+    healthcheck:
+      test: ["CMD-SHELL", "echo srvr | nc -w 2 localhost 2181 | grep -q Zookeeper"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on: [zookeeper]
+    environment:
+      KAFKA_BROKER_ID: "1"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      # Two listeners: INTERNAL (direct, for broker self/controller traffic so the
+      # broker can become healthy without the proxy) and EXTERNAL (advertised via
+      # Toxiproxy so client/service traffic is fault-injectable).
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_LISTENERS: "INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:9092,EXTERNAL://toxiproxy:29092"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  # Deterministic network fault injection in front of every stateful dependency.
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.9.0
+    command: ["-host", "0.0.0.0", "-config", "/config/toxiproxy.json"]
+    volumes:
+      - ./toxiproxy-scenarios/toxiproxy.json:/config/toxiproxy.json:ro
+    ports:
+      - "8474:8474"   # Toxiproxy admin API (used by fault scripts)
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      zookeeper: {condition: service_healthy}
+      kafka: {condition: service_healthy}
+
+  svc1: &svc
+    build: .
+    environment:
+      <<: *app-env
+      INSTANCE_ID: svc1
+    depends_on:
+      toxiproxy: {condition: service_started}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+  svc2:
+    <<: *svc
+    environment:
+      <<: *app-env
+      INSTANCE_ID: svc2
+  svc3:
+    <<: *svc
+    environment:
+      <<: *app-env
+      INSTANCE_ID: svc3
+
+  # Load balancer: the same idempotency key can land on any of the 3 JVMs,
+  # which is what creates cross-process race conditions.
+  nginx:
+    image: nginx:1.27
+    volumes:
+      - ./load-tests/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:8080"
+    depends_on: [svc1, svc2, svc3]
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+      GF_SECURITY_ADMIN_PASSWORD: "admin"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on: [prometheus]

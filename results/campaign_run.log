@@ -1,0 +1,270 @@
+----------------------------------------------------------------
+[campaign 2026-06-03 16:01:14] CAMPAIGN START
+[campaign 2026-06-03 16:01:14] config: REPS=3 WARMUP=60s WINDOW=60s E1_RATE=200
+[campaign 2026-06-03 16:01:14] config: SAT_RATES='100 200 400 600 800 1000 1500' (SAT_DUR=20s)  LAT_LEVELS='0 25 50 100 250 500'
+[campaign 2026-06-03 16:01:14] config: strategies='DB REDIS ZK KAFKA OUTBOX PAYLOAD_HASH'
+[campaign 2026-06-03 16:01:14] host: 20 cores, 31GB RAM, docker 29.1.3
+----------------------------------------------------------------
+[campaign 2026-06-03 16:01:14] ensuring prebuilt jar exists (Dockerfile.jar)
+[campaign 2026-06-03 16:01:14] pulling k6 image
+[campaign 2026-06-03 16:01:16] building service images once
+ svc1  Built
+ svc2  Built
+ svc3  Built
+[campaign 2026-06-03 16:01:19] backed up prior aggregate -> results/aggregate.pilot-backup.csv
+[campaign 2026-06-03 16:01:19] boot sanity check (DB)
+[campaign 2026-06-03 16:02:05]   boot check: first=201 second=200 side_effects=1 (expect 201/200/1)
+----------------------------------------------------------------
+[campaign 2026-06-03 16:02:19] PHASE 1 — E1 (baseline + saturation), E2 (burst DSEVR), E3 (latency sweep)
+----------------------------------------------------------------
+[campaign 2026-06-03 16:02:19] STRATEGY DB — booting one stack for all Phase-1 scenarios
+[campaign 2026-06-03 16:02:58]   active=DB dep=postgres
+[campaign 2026-06-03 16:02:58]   warm-up 60s at 200 r/s
+[campaign 2026-06-03 16:05:04]     E1 run1: thr=199.99127213491525 r/s p99=9.368122ms
+[campaign 2026-06-03 16:06:07]     E1 run2: thr=199.99079684380823 r/s p99=8.120737ms
+[campaign 2026-06-03 16:07:09]     E1 run3: thr=199.99269558883836 r/s p99=7.428782ms
+[campaign 2026-06-03 16:07:09]   saturation sweep: 100 200 400 600 800 1000 1500 (x3, 20s)
+[campaign 2026-06-03 16:08:16]     rate=100: achieved=100 r/s err=0.0%
+[campaign 2026-06-03 16:09:23]     rate=200: achieved=200 r/s err=0.0%
+[campaign 2026-06-03 16:10:29]     rate=400: achieved=400 r/s err=0.0%
+[campaign 2026-06-03 16:11:36]     rate=600: achieved=600 r/s err=0.0%
+[campaign 2026-06-03 16:12:43]     rate=800: achieved=800 r/s err=0.0%
+[campaign 2026-06-03 16:13:47]     rate=1000: achieved=1000 r/s err=0.0%
+[campaign 2026-06-03 16:14:51]     rate=1500: achieved=1500 r/s err=0.0%
+[campaign 2026-06-03 16:15:02]     E2 run1: logical=1450 total=1450 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 16:15:12]     E2 run2: logical=1116 total=1116 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 16:15:21]     E2 run3: logical=1114 total=1114 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 16:15:21]   E3 latency sweep on postgres: 0 25 50 100 250 500 ms (x3)
+[campaign 2026-06-03 16:17:29]     lat=0ms done
+[campaign 2026-06-03 16:19:48]     lat=25ms done
+[campaign 2026-06-03 16:22:03]     lat=50ms done
+[campaign 2026-06-03 16:24:13]     lat=100ms done
+[campaign 2026-06-03 16:26:24]     lat=250ms done
+[campaign 2026-06-03 16:28:41]     lat=500ms done
+[campaign 2026-06-03 16:28:41]   checkpoint saved: results/checkpoints/aggregate.phase1-DB.csv (58 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 16:28:55] STRATEGY REDIS — booting one stack for all Phase-1 scenarios
+[campaign 2026-06-03 16:29:28]   active=REDIS dep=redis
+[campaign 2026-06-03 16:29:28]   warm-up 60s at 200 r/s
+[campaign 2026-06-03 16:31:34]     E1 run1: thr=199.98804656064576 r/s p99=10.536448ms
+[campaign 2026-06-03 16:32:36]     E1 run2: thr=199.99029028474908 r/s p99=9.934870400000005ms
+[campaign 2026-06-03 16:33:38]     E1 run3: thr=199.9949873200384 r/s p99=9.226159ms
+[campaign 2026-06-03 16:33:38]   saturation sweep: 100 200 400 600 800 1000 1500 (x3, 20s)
+[campaign 2026-06-03 16:34:46]     rate=100: achieved=100 r/s err=0.0%
+[campaign 2026-06-03 16:35:53]     rate=200: achieved=200 r/s err=0.0%
+[campaign 2026-06-03 16:37:00]     rate=400: achieved=400 r/s err=0.0%
+[campaign 2026-06-03 16:38:06]     rate=600: achieved=600 r/s err=0.0%
+[campaign 2026-06-03 16:39:14]     rate=800: achieved=800 r/s err=0.0%
+[campaign 2026-06-03 16:40:20]     rate=1000: achieved=1000 r/s err=0.0%
+[campaign 2026-06-03 16:41:27]     rate=1500: achieved=1500 r/s err=0.0%
+[campaign 2026-06-03 16:41:37]     E2 run1: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 16:41:46]     E2 run2: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 16:41:56]     E2 run3: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 16:41:56]   E3 latency sweep on redis: 0 25 50 100 250 500 ms (x3)
+[campaign 2026-06-03 16:44:04]     lat=0ms done
+[campaign 2026-06-03 16:46:14]     lat=25ms done
+[campaign 2026-06-03 16:48:24]     lat=50ms done
+[campaign 2026-06-03 16:50:34]     lat=100ms done
+[campaign 2026-06-03 16:52:45]     lat=250ms done
+[campaign 2026-06-03 16:54:56]     lat=500ms done
+[campaign 2026-06-03 16:54:56]   checkpoint saved: results/checkpoints/aggregate.phase1-REDIS.csv (115 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 16:55:10] STRATEGY ZK — booting one stack for all Phase-1 scenarios
+[campaign 2026-06-03 16:55:47]   active=ZK dep=zookeeper
+[campaign 2026-06-03 16:55:47]   warm-up 60s at 200 r/s
+[campaign 2026-06-03 16:57:53]     E1 run1: thr=199.91574516354197 r/s p99=39.764399ms
+[campaign 2026-06-03 16:58:56]     E1 run2: thr=199.93504647620654 r/s p99=36.922067ms
+[campaign 2026-06-03 16:59:59]     E1 run3: thr=199.92671620830137 r/s p99=36.321322ms
+[campaign 2026-06-03 16:59:59]   saturation sweep: 100 200 400 600 800 1000 1500 (x3, 20s)
+[campaign 2026-06-03 17:01:07]     rate=100: achieved=100 r/s err=0.0%
+[campaign 2026-06-03 17:02:14]     rate=200: achieved=200 r/s err=0.0%
+[campaign 2026-06-03 17:03:22]     rate=400: achieved=400 r/s err=0.0%
+[campaign 2026-06-03 17:04:29]     rate=600: achieved=600 r/s err=0.0%
+[campaign 2026-06-03 17:05:37]     rate=800: achieved=800 r/s err=0.0%
+[campaign 2026-06-03 17:06:45]     rate=1000: achieved=1000 r/s err=0.0%
+[campaign 2026-06-03 17:07:57]     rate=1500: achieved=1393 r/s err=0.0%
+[campaign 2026-06-03 17:08:13]     E2 run1: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 17:08:28]     E2 run2: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 17:08:43]     E2 run3: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 17:08:43]   E3 latency sweep on zookeeper: 0 25 50 100 250 500 ms (x3)
+[campaign 2026-06-03 17:10:53]     lat=0ms done
+[campaign 2026-06-03 17:13:02]     lat=25ms done
+[campaign 2026-06-03 17:15:12]     lat=50ms done
+[campaign 2026-06-03 17:17:23]     lat=100ms done
+[campaign 2026-06-03 17:19:34]     lat=250ms done
+[campaign 2026-06-03 17:21:46]     lat=500ms done
+[campaign 2026-06-03 17:21:46]   checkpoint saved: results/checkpoints/aggregate.phase1-ZK.csv (172 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 17:22:00] STRATEGY KAFKA — booting one stack for all Phase-1 scenarios
+[campaign 2026-06-03 17:22:36]   active=KAFKA dep=kafka
+[campaign 2026-06-03 17:22:36]   warm-up 60s at 200 r/s
+[campaign 2026-06-03 17:24:41]     E1 run1: thr=200.00818659289965 r/s p99=2.422092ms
+[campaign 2026-06-03 17:25:44]     E1 run2: thr=200.0090489420205 r/s p99=1.626998ms
+[campaign 2026-06-03 17:26:46]     E1 run3: thr=200.00706561415865 r/s p99=1.650461ms
+[campaign 2026-06-03 17:26:46]   saturation sweep: 100 200 400 600 800 1000 1500 (x3, 20s)
+[campaign 2026-06-03 17:27:53]     rate=100: achieved=100 r/s err=0.0%
+[campaign 2026-06-03 17:29:00]     rate=200: achieved=200 r/s err=0.0%
+[campaign 2026-06-03 17:30:07]     rate=400: achieved=400 r/s err=0.0%
+[campaign 2026-06-03 17:31:14]     rate=600: achieved=600 r/s err=0.0%
+[campaign 2026-06-03 17:32:21]     rate=800: achieved=800 r/s err=0.0%
+[campaign 2026-06-03 17:33:29]     rate=1000: achieved=1000 r/s err=0.0%
+[campaign 2026-06-03 17:34:36]     rate=1500: achieved=1500 r/s err=0.0%
+[campaign 2026-06-03 17:37:43]     E2 run1: logical=0 total=0 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 17:40:50]     E2 run2: logical=0 total=0 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 17:43:19]     E2 run3: logical=200 total=200 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 17:43:19]   E3 latency sweep on kafka: 0 25 50 100 250 500 ms (x3)
+[campaign 2026-06-03 17:45:28]     lat=0ms done
+[campaign 2026-06-03 17:47:37]     lat=25ms done
+[campaign 2026-06-03 17:49:47]     lat=50ms done
+[campaign 2026-06-03 17:51:55]     lat=100ms done
+[campaign 2026-06-03 17:54:04]     lat=250ms done
+[campaign 2026-06-03 17:56:13]     lat=500ms done
+[campaign 2026-06-03 17:56:13]   checkpoint saved: results/checkpoints/aggregate.phase1-KAFKA.csv (229 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 17:56:26] STRATEGY OUTBOX — booting one stack for all Phase-1 scenarios
+[campaign 2026-06-03 17:56:59]   active=OUTBOX dep=postgres
+[campaign 2026-06-03 17:56:59]   warm-up 60s at 200 r/s
+[campaign 2026-06-03 17:59:06]     E1 run1: thr=200.00007620367873 r/s p99=6.731404ms
+[campaign 2026-06-03 18:00:08]     E1 run2: thr=199.99947340526953 r/s p99=5.932083ms
+[campaign 2026-06-03 18:01:11]     E1 run3: thr=200.0010583640708 r/s p99=6.108361ms
+[campaign 2026-06-03 18:01:11]   saturation sweep: 100 200 400 600 800 1000 1500 (x3, 20s)
+[campaign 2026-06-03 18:02:17]     rate=100: achieved=100 r/s err=0.0%
+[campaign 2026-06-03 18:03:24]     rate=200: achieved=200 r/s err=0.0%
+[campaign 2026-06-03 18:04:31]     rate=400: achieved=400 r/s err=0.0%
+[campaign 2026-06-03 18:05:38]     rate=600: achieved=600 r/s err=0.0%
+[campaign 2026-06-03 18:06:46]     rate=800: achieved=800 r/s err=0.0%
+[campaign 2026-06-03 18:07:54]     rate=1000: achieved=1000 r/s err=0.0%
+[campaign 2026-06-03 18:09:02]     rate=1500: achieved=1500 r/s err=0.0%
+[campaign 2026-06-03 18:12:19]     E2 run1: logical=0 total=0 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 18:15:35]     E2 run2: logical=0 total=0 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 18:18:50]     E2 run3: logical=0 total=0 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 18:18:50]   E3 latency sweep on postgres: 0 25 50 100 250 500 ms (x3)
+[campaign 2026-06-03 18:21:00]     lat=0ms done
+[campaign 2026-06-03 18:23:10]     lat=25ms done
+[campaign 2026-06-03 18:25:21]     lat=50ms done
+[campaign 2026-06-03 18:27:46]     lat=100ms done
+[campaign 2026-06-03 18:30:20]     lat=250ms done
+[campaign 2026-06-03 18:32:58]     lat=500ms done
+[campaign 2026-06-03 18:32:58]   checkpoint saved: results/checkpoints/aggregate.phase1-OUTBOX.csv (286 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 18:33:12] STRATEGY PAYLOAD_HASH — booting one stack for all Phase-1 scenarios
+[campaign 2026-06-03 18:33:44]   active=PAYLOAD_HASH dep=postgres
+[campaign 2026-06-03 18:33:44]   warm-up 60s at 200 r/s
+[campaign 2026-06-03 18:35:50]     E1 run1: thr=200.00492950738172 r/s p99=12.083348ms
+[campaign 2026-06-03 18:36:52]     E1 run2: thr=199.98856628988298 r/s p99=10.445276ms
+[campaign 2026-06-03 18:37:55]     E1 run3: thr=199.9929746467866 r/s p99=10.084429440000001ms
+[campaign 2026-06-03 18:37:55]   saturation sweep: 100 200 400 600 800 1000 1500 (x3, 20s)
+[campaign 2026-06-03 18:39:02]     rate=100: achieved=100 r/s err=0.0%
+[campaign 2026-06-03 18:40:09]     rate=200: achieved=200 r/s err=0.0%
+[campaign 2026-06-03 18:41:16]     rate=400: achieved=400 r/s err=0.0%
+[campaign 2026-06-03 18:42:23]     rate=600: achieved=600 r/s err=0.0%
+[campaign 2026-06-03 18:43:30]     rate=800: achieved=800 r/s err=0.0%
+[campaign 2026-06-03 18:44:36]     rate=1000: achieved=1000 r/s err=0.0%
+[campaign 2026-06-03 18:45:44]     rate=1500: achieved=1500 r/s err=0.0%
+[campaign 2026-06-03 18:45:56]     E2 run1: logical=1452 total=1452 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 18:46:07]     E2 run2: logical=1158 total=1158 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 18:46:17]     E2 run3: logical=1108 total=1108 viol=0 DSEVR=0.000000
+[campaign 2026-06-03 18:46:17]   E3 latency sweep on postgres: 0 25 50 100 250 500 ms (x3)
+[campaign 2026-06-03 18:48:27]     lat=0ms done
+[campaign 2026-06-03 18:50:36]     lat=25ms done
+[campaign 2026-06-03 18:52:46]     lat=50ms done
+[campaign 2026-06-03 18:54:56]     lat=100ms done
+[campaign 2026-06-03 18:57:08]     lat=250ms done
+[campaign 2026-06-03 18:59:25]     lat=500ms done
+[campaign 2026-06-03 18:59:25]   checkpoint saved: results/checkpoints/aggregate.phase1-PAYLOAD_HASH.csv (343 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 18:59:39] PHASE 2 — E4 partition, E5 clock-drift, E6 Kafka crash, E7 conflict
+[campaign 2026-06-03 18:59:39]   E4 DB run1 (partition postgres 8s)
+[campaign 2026-06-03 19:01:18]     E4 DB run1: DSEVR=0.000000 err=0.141347 recovery=2.42s
+[campaign 2026-06-03 19:01:32]   E4 DB run2 (partition postgres 8s)
+[campaign 2026-06-03 19:03:10]     E4 DB run2: DSEVR=0.000000 err=0.143515 recovery=2.43s
+[campaign 2026-06-03 19:03:24]   E4 DB run3 (partition postgres 8s)
+[campaign 2026-06-03 19:05:00]     E4 DB run3: DSEVR=0.000000 err=0.142092 recovery=2.49s
+[campaign 2026-06-03 19:05:14]   E4 REDIS run1 (partition redis 8s)
+[campaign 2026-06-03 19:06:52]     E4 REDIS run1: DSEVR=0.000000 err=0.0796034 recovery=0.04s
+[campaign 2026-06-03 19:07:06]   E4 REDIS run2 (partition redis 8s)
+[campaign 2026-06-03 19:08:43]     E4 REDIS run2: DSEVR=0.000000 err=0.0822864 recovery=0.04s
+[campaign 2026-06-03 19:08:56]   E4 REDIS run3 (partition redis 8s)
+[campaign 2026-06-03 19:10:36]     E4 REDIS run3: DSEVR=0.000000 err=0.0958598 recovery=1.64s
+[campaign 2026-06-03 19:10:50]   E4 ZK run1 (partition zookeeper 8s)
+[campaign 2026-06-03 19:12:29]     E4 ZK run1: DSEVR=0.000000 err=0.0269448 recovery=0.93s
+[campaign 2026-06-03 19:12:42]   E4 ZK run2 (partition zookeeper 8s)
+[campaign 2026-06-03 19:14:19]     E4 ZK run2: DSEVR=0.000000 err=0.0236332 recovery=1.38s
+[campaign 2026-06-03 19:14:33]   E4 ZK run3 (partition zookeeper 8s)
+[campaign 2026-06-03 19:16:09]     E4 ZK run3: DSEVR=0.000000 err=0.0285672 recovery=0.43s
+[campaign 2026-06-03 19:16:22]   checkpoint saved: results/checkpoints/aggregate.phase2-E4.csv (379 rows)
+[campaign 2026-06-03 19:16:22]   E5 REDIS +2s drift run1
+[campaign 2026-06-03 19:17:53]     E5 REDIS run1: premature=0 DSEVR=0.000000
+[campaign 2026-06-03 19:18:06]   E5 ZK +2s drift run1
+[campaign 2026-06-03 19:19:36]     E5 ZK run1: premature=0 DSEVR=0.000000
+[campaign 2026-06-03 19:19:49]   E5 REDIS_TS timing-stress run1
+[campaign 2026-06-03 19:21:21]     E5 REDIS_TS run1: premature=163 DSEVR=0.000000
+[campaign 2026-06-03 19:21:35]   E5 REDIS +2s drift run2
+[campaign 2026-06-03 19:23:07]     E5 REDIS run2: premature=0 DSEVR=0.000000
+[campaign 2026-06-03 19:23:20]   E5 ZK +2s drift run2
+[campaign 2026-06-03 19:24:50]     E5 ZK run2: premature=0 DSEVR=0.000000
+[campaign 2026-06-03 19:25:03]   E5 REDIS_TS timing-stress run2
+[campaign 2026-06-03 19:26:34]     E5 REDIS_TS run2: premature=178 DSEVR=0.000000
+[campaign 2026-06-03 19:26:47]   E5 REDIS +2s drift run3
+[campaign 2026-06-03 19:28:19]     E5 REDIS run3: premature=0 DSEVR=0.000000
+[campaign 2026-06-03 19:28:33]   E5 ZK +2s drift run3
+[campaign 2026-06-03 19:30:02]     E5 ZK run3: premature=0 DSEVR=0.000000
+[campaign 2026-06-03 19:30:15]   E5 REDIS_TS timing-stress run3
+[campaign 2026-06-03 19:31:47]     E5 REDIS_TS run3: premature=163 DSEVR=0.000000
+[campaign 2026-06-03 19:32:01]   checkpoint saved: results/checkpoints/aggregate.phase2-E5.csv (424 rows)
+[campaign 2026-06-03 19:32:01]   E6 KAFKA crash run1
+[campaign 2026-06-03 19:32:46]     SIGKILL svc2 (mid-processing)
+[campaign 2026-06-03 19:33:46]     E6 run1: redeliveries=0 suppressed=8482 DSEVR=0.000000
+[campaign 2026-06-03 19:33:59]   E6 KAFKA crash run2
+[campaign 2026-06-03 19:34:44]     SIGKILL svc2 (mid-processing)
+[campaign 2026-06-03 19:35:32]     E6 run2: redeliveries=0 suppressed=7564 DSEVR=0.000000
+[campaign 2026-06-03 19:35:46]   E6 KAFKA crash run3
+[campaign 2026-06-03 19:36:30]     SIGKILL svc2 (mid-processing)
+[campaign 2026-06-03 19:37:30]     E6 run3: redeliveries=0 suppressed=6671 DSEVR=0.000000
+[campaign 2026-06-03 19:37:44]   checkpoint saved: results/checkpoints/aggregate.phase2-E6.csv (436 rows)
+[campaign 2026-06-03 19:37:44]   E7 PAYLOAD_HASH run1
+[campaign 2026-06-03 19:38:30]     E7 PAYLOAD_HASH run1: correct=2000 incorrect=0 accuracy=1
+[campaign 2026-06-03 19:38:44]   E7 PAYLOAD_HASH run2
+[campaign 2026-06-03 19:39:32]     E7 PAYLOAD_HASH run2: correct=2000 incorrect=0 accuracy=1
+[campaign 2026-06-03 19:39:46]   E7 PAYLOAD_HASH run3
+[campaign 2026-06-03 19:40:32]     E7 PAYLOAD_HASH run3: correct=2000 incorrect=0 accuracy=1
+[campaign 2026-06-03 19:40:46]   E7 DB run1
+[campaign 2026-06-03 19:41:31]     E7 DB run1: correct=2000 incorrect=0 accuracy=1
+[campaign 2026-06-03 19:41:45]   E7 DB run2
+[campaign 2026-06-03 19:42:32]     E7 DB run2: correct=2000 incorrect=0 accuracy=1
+[campaign 2026-06-03 19:42:46]   E7 DB run3
+[campaign 2026-06-03 19:43:31]     E7 DB run3: correct=2000 incorrect=0 accuracy=1
+[campaign 2026-06-03 19:43:44]   checkpoint saved: results/checkpoints/aggregate.phase2-E7.csv (460 rows)
+----------------------------------------------------------------
+[campaign 2026-06-03 19:43:44] ANALYSIS — regenerating figures and tables from measured data
+[analyze] wrote sweep figure fig_p99_latency_sweep.png
+[analyze] wrote sweep figure fig_dsevr_latency_sweep.png
+[analyze] wrote fig_saturation.png
+[analyze] wrote tables/ and figures/ (illustrative=False)
+              throughput_e1  p99_ms_e1  violation_rate_e2
+strategy                                                 
+DB                 199.9916     8.3059                0.0
+REDIS              199.9911     9.8992                0.0
+ZK                 199.9258    37.6693                0.0
+KAFKA              200.0081     1.8999                0.0
+OUTBOX             200.0002     6.2573                0.0
+PAYLOAD_HASH       199.9955    10.8710                0.0
+\end{tabular}\end{table}
+
+[make_results_table] wrote /home/mahmut/Downloads/idempotency/idempotency-study/analysis/../paper/fault_table.tex
+[campaign 2026-06-03 19:43:49] PAPER — rebuilding PDF
+[campaign 2026-06-03 19:43:49]   SKIP: no LaTeX toolchain (pdflatex) on this host. Build the PDF with
+[campaign 2026-06-03 19:43:49]         'cd paper && make' after 'sudo apt-get install -y texlive-latex-recommended texlive-publishers texlive-fonts-recommended', or on Overleaf.
+----------------------------------------------------------------
+[campaign 2026-06-03 19:43:49] CAMPAIGN COMPLETE in 222 min
+[campaign 2026-06-03 19:43:49] rows per scenario in results/aggregate.csv:
+    E1: 54 rows
+    E2: 72 rows
+    E3: 216 rows
+    E4: 36 rows
+    E5: 45 rows
+    E6: 12 rows
+    E7: 24 rows
+[campaign 2026-06-03 19:43:49] saturation knee (first rate with mean error >=1%) per strategy:
+[campaign 2026-06-03 19:43:49] figures in results/figures/ ; tables in results/tables/ ; full log: results/campaign_run.log
+----------------------------------------------------------------

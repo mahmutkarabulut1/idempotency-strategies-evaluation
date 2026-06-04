@@ -1,0 +1,63 @@
+% =====================================================================
+% IEEE ACCESS submission version.
+% Uses the official IEEE Access class (IEEEaccess.cls) and front matter.
+%
+% IEEEaccess.cls (and the IEEE Access logo) are NOT part of stock TeX Live;
+% obtain them from the official IEEE Access LaTeX template:
+%   - Overleaf: "IEEE Access LaTeX template"
+%   - IEEE Author Center -> Templates -> IEEE Access
+% Drop this file and body.tex into that template directory to build the PDF.
+%
+% The body (sections, figures, tables, abstract, keywords, references) is shared
+% verbatim with the self-contained build via \input{body}.
+% =====================================================================
+\documentclass{ieeeaccess}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\graphicspath{{../results/figures/}}
+
+\begin{document}
+
+\history{Date of publication 00 Month, 2026, date of current version 00 Month, 2026.}
+\doi{10.1109/ACCESS.2026.0000000}
+
+\title{A Comparative Experimental Evaluation of Idempotency and Distributed
+Locking Strategies under High Concurrency and Fault Conditions}
+
+\author{\uppercase{Mahmut Karabulut}\authorrefmark{1}}
+\address[1]{Department of Computer Engineering, Ege University, Izmir, Turkey
+(e-mail: mahmutkarabulut2003@gmail.com)}
+\tfootnote{This work received no specific grant from any funding agency.}
+
+\markboth
+{Karabulut: A Comparative Experimental Evaluation of Idempotency and Distributed Locking Strategies}
+{Karabulut: A Comparative Experimental Evaluation of Idempotency and Distributed Locking Strategies}
+
+\corresp{Corresponding author: Mahmut Karabulut (e-mail: mahmutkarabulut2003@gmail.com).}
+
+\maketitle
+
+% Shared body: abstract, index terms, all sections, figures, tables, references.
+\input{body}
+
+\EOD
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{author_photo.jpg}}]{Mahmut Karabulut}
+% Replace author_photo.jpg with a grayscale/color photo (min 100x120 px) per
+% IEEE Access requirements; biography 100-150 words.
+is a final-year Computer Engineering student at Ege University, Izmir, Turkey.
+His research interests include distributed systems reliability, idempotency,
+microservices architecture, and fault-injected experimental evaluation.
+\end{IEEEbiography}
+
+\end{document}

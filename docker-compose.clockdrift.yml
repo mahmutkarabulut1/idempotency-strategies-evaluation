@@ -1,0 +1,9 @@
+# E5 overlay: skew ONLY svc1's wall clock via libfaketime, leaving svc2/svc3 on
+# real time. Exercises TTL/lease timing assumptions when one node's clock drifts.
+#   docker compose -f docker-compose.yml -f docker-compose.override.yml \
+#                  -f docker-compose.clockdrift.yml up -d
+services:
+  svc1:
+    environment:
+      LD_PRELOAD: /usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
+      FAKETIME: "${FAKETIME:-+2}"

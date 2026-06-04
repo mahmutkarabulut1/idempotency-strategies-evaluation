@@ -1,0 +1,8 @@
+# target/ intentionally NOT ignored so Dockerfile.jar can copy the prebuilt jar
+results/
+analysis/
+paper/
+docs/
+load-tests/
+.git/
+*.md
